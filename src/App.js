@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header'
+import {NewsSource} from './components/NewsSource'
+import React, {useState} from 'react'
 
 function App() {
+
+  const deleteFun = (article) =>{
+    console.log(article.id)
+    
+    setNews(news.filter((e)=>{
+      return e !== article
+    }))
+  }
+
+  const getArticle = (article) =>{
+    console.log(article)
+    setNews([{ id:1,
+    source: 'http://Nonono.com',
+    content: 'ping pong'
+  },
+  { id:2,
+    source: 'http://Yoyoyo.com',
+    content: 'scriddlet'
+  }])
+  }
+  let initial = [{ id:1,
+    source: 'http://sss.com',
+    content: 'peepee poopoo'
+  },
+  { id:2,
+    source: 'http://mmm.com',
+    content: 'peepee poopoo'
+  }]
+
+
+  const [news, setNews] = useState(initial);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+     <Header />
+     <NewsSource data = {news} deleteFun = {deleteFun} getArticle={getArticle}/>
     </div>
   );
 }
