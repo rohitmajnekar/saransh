@@ -28,7 +28,7 @@ export  const NewsSource = (props) => {
 
         <Router>
             <div>
-                <ButtonGroup  >
+                <ButtonGroup className={'m-2'} >
                     {articles.map((article,i) =>{
                         return <Button variant="contained" color='secondary' ><Link style={{ textDecoration: 'none', color:'white' }} onClick={()=>setstate(i)}  key={i} to={article}>{article}</Link></Button>
                     })}
@@ -43,7 +43,8 @@ export  const NewsSource = (props) => {
                     <NewsList source='theHindu'/>
                 </Route>
 
-                <Route path='/theHindustan' exact>
+                <Route key='3' path='/theHindustan' exact>
+                    <NewsList source='pindu'/>
                     {/* <NewsList type="husdustan" newsItem={props.data[0]} key={props.data.id} del = {props.deleteFun}/> */}
                 </Route>
                 <Route path='/theQuint' exact>
@@ -51,5 +52,6 @@ export  const NewsSource = (props) => {
                 </Route>
             </Switch>
         </Router>
+        
     )
 }

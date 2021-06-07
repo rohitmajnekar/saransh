@@ -1,6 +1,8 @@
 import Header from './components/Header'
 import {NewsSource} from './components/NewsSource'
 import React, {useState} from 'react'
+import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom'
+
 
 function App() {
 
@@ -38,7 +40,16 @@ function App() {
     <div className="App">
 
      <Header />
-     <NewsSource data = {news} deleteFun = {deleteFun} getArticle={getArticle}/>
+     <Router>
+       <Switch>
+         <Route key='2' path='/fav'>
+            <div>hello</div>
+         </Route>
+         <Route key='2' path='/'>
+            <NewsSource data = {news} deleteFun = {deleteFun} getArticle={getArticle}/>
+         </Route>
+       </Switch>
+     </Router>
     </div>
   );
 }

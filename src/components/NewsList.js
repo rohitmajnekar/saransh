@@ -1,18 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {useSpring, animated} from 'react-spring'
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import Divider from '@material-ui/core/Divider';
-import {Button, ButtonGroup} from '@material-ui/core';
-import BookIcon from '@material-ui/icons/Book';
-
+import {List} from './List'
 export const NewsList = (props) => {
 
+    const [startEle, setStartEle] = useState(1);
+    // const [lastEle, setLastEle] = useState(10);
+
+    const getPaginatedData = (n) => setStartEle((n-1)*10)
     const [news, setNews] = useState({ 
         paper: '',
         data:[],
@@ -37,56 +30,50 @@ export const NewsList = (props) => {
     else{
         return (
             <>
-            {news.length?news[0].data.map((d, i)=>{
+            {news.length?news[0].data.slice(startEle, startEle+10).map((d, i)=>{
                 return <List data={d} link = {news[0].link[i]} id={i} key = {i} />
-            }):'loading'}
+            }):<Spinner/>}
+            {news.length?<Paginate length = {news[0].data.length/10} pag = {getPaginatedData} />:""}
             </>
         )
     }
 
 }
 
-const List = ({data, link, id}) => {
-    const transition = useSpring( {
-        from:{x:1000, opacity:0},
-        delay:id *150,
-        to:{x:0, opacity:1},
-        leave:{}
+const Spinner = ()=>{
+    return (
+        <div class="d-flex justify-content-center m-5">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    )
+}
 
-    })
-    const useStyles = makeStyles((theme) => ({
-        root: {
-          width: '100%',
-        },
-        heading: {
-          fontSize: theme.typography.pxToRem(15),
-          fontWeight: theme.typography.fontWeightRegular,
-        },
-    }));
-    const classes = useStyles();
-    return(
-        <animated.div style={transition} className={classes.root}>
-          <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            >
-            <Typography className={classes.heading}>{data.substring(0,60)} </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-            <Typography className='container' style={{alignItems: 'center', textAlign: 'justify', textJustify:'inter-word'}}>
-                <ButtonGroup>
-                    <Button size='small' color="primary" startIcon={<FavoriteIcon edge ='start'/>}>Add Fav</Button>
-                    <Button size='small' color="primary" startIcon={<BookIcon edge ='start'/>}>ReadLater</Button>
-                </ButtonGroup>
-                <br/>
-                <br/>
-                <div className="container ml-6">{data}</div>
-            </Typography>
-            </AccordionDetails>
-        </Accordion>  
-        <Divider light />
-        </animated.div>
+const Paginate = ({length, pag}) =>{
+
+    const obj = [];
+
+    const Style = {
+        background: 'grey',
+        margin: '3px',
+        width:'20px',
+        height: '30px',
+        alignContent: 'center'
+    }
+
+    for(var i =1; i<=length; i++){
+        obj.push(i);
+    }
+
+    return (
+    <ul className="pagination">
+        {
+            obj.map((i)=>{
+                return <li className='page-item'><a className='page-link' onClick={() => pag(i)} >{i}</a></li>
+            })
+        }
+    
+    </ul>
     )
 }
